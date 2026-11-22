@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class EventAdapter(private val onClick: (CountdownEvent) -> Unit) :
@@ -39,6 +40,15 @@ class EventAdapter(private val onClick: (CountdownEvent) -> Unit) :
         h.title.text = e.title
         h.date.text = Fmt.dateFull(e.target)
         h.detail.text = Fmt.detail(c, e, s)
+        // darker text shades keep WCAG AA contrast on the soft background
+        h.number.setTextColor(
+            ContextCompat.getColor(c, if (s.reached) R.color.soft_green_text else R.color.soft_blue),
+        )
+        h.detail.setTextColor(
+            ContextCompat.getColor(
+                c, if (s.skippedByHolidays > 0) R.color.soft_orange_text else R.color.soft_muted,
+            ),
+        )
         h.itemView.setOnClickListener { onClick(e) }
     }
 }

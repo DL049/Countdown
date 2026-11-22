@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="4dp"
         android:paddingBottom="96dp" />
 
     <TextView
@@ -19,15 +21,25 @@
         android:gravity="center"
         android:lineSpacingMultiplier="1.3"
         android:padding="32dp"
-        android:textColor="?attr/colorSecondary"
+        android:textColor="@color/soft_muted"
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.example.countdown.SoftFrame
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add" />
+        android:layout_margin="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:softRadius="30dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:importantForAccessibility="no"
+            android:padding="18dp"
+            android:src="@drawable/ic_add" />
+    </com.example.countdown.SoftFrame>
 </FrameLayout>

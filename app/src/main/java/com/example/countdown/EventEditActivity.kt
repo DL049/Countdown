@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import java.time.LocalDate
 
-/** Create or edit one countdown event. */
+/** Create or edit one countdown event (including its widget background image). */
 class EventEditActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_EVENT_ID = "event_id"
@@ -27,29 +28,48 @@ class EventEditActivity : AppCompatActivity() {
     private lateinit var eventId: String
     private var isNew = true
     private var target: LocalDate = LocalDate.now().plusDays(30)
+    private var weekdays = false
     private var allHolidays = emptyList<Holiday>()
     private val checks = LinkedHashMap<String, CheckBox>()
 
-    private lateinit var titleLayout: TextInputLayout
-    private lateinit var titleEdit: TextInputEditText
-    private lateinit var dateButton: Button
-    private lateinit var toggle: MaterialButtonToggleGroup
+    private lateinit var titleEdit: EditText
+    private lateinit var titleError: TextView
+    private lateinit var dateButton: SoftButton
+    private lateinit var btnEveryday: SoftButton
+    private lateinit var btnWeekdays: SoftButton
     private lateinit var todaySwitch: MaterialSwitch
     private lateinit var preview: TextView
+    private lateinit var bgPreview: ImageView
+    private lateinit var bgHint: TextView
+    private lateinit var btnRemoveImage: SoftButton
+
+    private val pickImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                if (WidgetBg.saveSource(this, eventId, uri)) {
+                    updateBgPreview()
+                } else {
+                    Toast.makeText(this, R.string.image_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_edit)
-        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        titleLayout = findViewById(R.id.title_layout)
         titleEdit = findViewById(R.id.edit_title)
+        titleError = findViewById(R.id.title_error)
         dateButton = findViewById(R.id.btn_date)
-        toggle = findViewById(R.id.toggle_mode)
+        btnEveryday = findViewById(R.id.btn_everyday)
+        btnWeekdays = findViewById(R.id.btn_weekdays)
         todaySwitch = findViewById(R.id.switch_today)
         preview = findViewById(R.id.tv_preview)
+        bgPreview = findViewById(R.id.img_bg_preview)
+        bgHint = findViewById(R.id.tv_bg_hint)
+        btnRemoveImage = findViewById(R.id.btn_remove_image)
 
         allHolidays = Repo.holidays(this)
         val existing = intent.getStringExtra(EXTRA_EVENT_ID)?.let { Repo.event(this, it) }
@@ -61,21 +81,21 @@ class EventEditActivity : AppCompatActivity() {
             titleEdit.setText(it.title)
             target = it.target
             todaySwitch.isChecked = it.includeToday
+            weekdays = it.mode == CountMode.WEEKDAYS
         }
-        toggle.check(
-            if (existing?.mode == CountMode.WEEKDAYS) R.id.btn_weekdays else R.id.btn_everyday,
-        )
 
         // holiday checklist (new events skip every holiday by default)
         val container = findViewById<LinearLayout>(R.id.holiday_container)
-        val noHolidays = findViewById<TextView>(R.id.tv_no_holidays)
-        noHolidays.visibility = if (allHolidays.isEmpty()) View.VISIBLE else View.GONE
+        val noHolidays = allHolidays.isEmpty()
+        findViewById<View>(R.id.tv_no_holidays).visibility = if (noHolidays) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.holiday_well).visibility = if (noHolidays) View.GONE else View.VISIBLE
         allHolidays.forEach { h ->
             val cb = CheckBox(this).apply {
                 text = getString(
                     R.string.holiday_check_fmt, h.name,
                     Fmt.dateMedium(h.start), Fmt.dateMedium(h.end),
                 )
+                setTextColor(ContextCompat.getColor(context, R.color.soft_text))
                 isChecked = existing?.let { h.id in it.holidayIds } ?: true
                 setOnCheckedChangeListener { _, _ -> refresh() }
             }
@@ -86,9 +106,19 @@ class EventEditActivity : AppCompatActivity() {
         dateButton.setOnClickListener {
             pickDate(R.string.label_target_date, target) { target = it; refresh() }
         }
-        toggle.addOnButtonCheckedListener { _, _, _ -> refresh() }
+        btnEveryday.setOnClickListener { weekdays = false; refresh() }
+        btnWeekdays.setOnClickListener { weekdays = true; refresh() }
         todaySwitch.setOnCheckedChangeListener { _, _ -> refresh() }
-        findViewById<Button>(R.id.btn_save).setOnClickListener { save() }
+        titleEdit.setOnFocusChangeListener { _, _ -> titleError.visibility = View.GONE }
+        findViewById<View>(R.id.btn_pick_image).setOnClickListener { pickImage.launch("image/*") }
+        btnRemoveImage.setOnClickListener {
+            WidgetBg.delete(this, eventId)
+            updateBgPreview()
+            CountdownWidgetProvider.updateAll(this)
+        }
+        findViewById<View>(R.id.btn_save).setOnClickListener { save() }
+
+        updateBgPreview()
         refresh()
     }
 
@@ -96,22 +126,40 @@ class EventEditActivity : AppCompatActivity() {
         id = eventId,
         title = titleEdit.text?.toString()?.trim().orEmpty(),
         target = target,
-        mode = if (toggle.checkedButtonId == R.id.btn_weekdays) CountMode.WEEKDAYS else CountMode.EVERYDAY,
+        mode = if (weekdays) CountMode.WEEKDAYS else CountMode.EVERYDAY,
         includeToday = todaySwitch.isChecked,
         holidayIds = checks.filter { it.value.isChecked }.keys.toSet(),
     )
 
     private fun refresh() {
         dateButton.text = Fmt.dateFull(target)
+        btnEveryday.setSegment(!weekdays)
+        btnWeekdays.setSegment(weekdays)
         val e = currentEvent()
         val s = CountdownCalc.summarize(e, allHolidays)
         preview.text = getString(R.string.preview_fmt, s.left, Fmt.unit(this, e, s))
     }
 
+    private fun updateBgPreview() {
+        val bmp = WidgetBg.thumb(this, eventId)
+        if (bmp != null) {
+            bgPreview.setImageBitmap(bmp)
+            bgPreview.visibility = View.VISIBLE
+            bgHint.visibility = View.GONE
+            btnRemoveImage.visibility = View.VISIBLE
+        } else {
+            bgPreview.setImageDrawable(null)
+            bgPreview.visibility = View.GONE
+            bgHint.visibility = View.VISIBLE
+            btnRemoveImage.visibility = View.GONE
+        }
+    }
+
     private fun save() {
         val e = currentEvent()
         if (e.title.isEmpty()) {
-            titleLayout.error = getString(R.string.title_required)
+            titleError.visibility = View.VISIBLE
+            titleEdit.requestFocus()
             return
         }
         Repo.upsertEvent(this, e)
@@ -133,6 +181,7 @@ class EventEditActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.delete) { _, _ ->
                     Repo.deleteEvent(this, eventId)
+                    WidgetBg.delete(this, eventId)
                     CountdownWidgetProvider.updateAll(this)
                     finish()
                 }

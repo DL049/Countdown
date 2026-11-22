@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class EventsFragment : Fragment(R.layout.fragment_list) {
     private val adapter = EventAdapter { e ->
@@ -25,7 +24,7 @@ class EventsFragment : Fragment(R.layout.fragment_list) {
         }
         empty = view.findViewById(R.id.empty)
         empty.setText(R.string.empty_events)
-        view.findViewById<FloatingActionButton>(R.id.fab).apply {
+        view.findViewById<View>(R.id.fab).apply {
             contentDescription = getString(R.string.new_event)
             setOnClickListener {
                 startActivity(Intent(requireContext(), EventEditActivity::class.java))
@@ -57,7 +56,7 @@ class HolidaysFragment : Fragment(R.layout.fragment_list) {
         }
         empty = view.findViewById(R.id.empty)
         empty.setText(R.string.empty_holidays)
-        view.findViewById<FloatingActionButton>(R.id.fab).apply {
+        view.findViewById<View>(R.id.fab).apply {
             contentDescription = getString(R.string.new_holiday)
             setOnClickListener {
                 startActivity(Intent(requireContext(), HolidayEditActivity::class.java))

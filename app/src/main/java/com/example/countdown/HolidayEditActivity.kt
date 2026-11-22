@@ -3,12 +3,12 @@ package com.example.countdown
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
+import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import java.time.LocalDate
 
 /** Create or edit one holiday (a named, inclusive date range). */
@@ -22,10 +22,10 @@ class HolidayEditActivity : AppCompatActivity() {
     private var start: LocalDate = LocalDate.now().plusDays(7)
     private var end: LocalDate = LocalDate.now().plusDays(7)
 
-    private lateinit var nameLayout: TextInputLayout
-    private lateinit var nameEdit: TextInputEditText
-    private lateinit var startButton: Button
-    private lateinit var endButton: Button
+    private lateinit var nameError: TextView
+    private lateinit var nameEdit: EditText
+    private lateinit var startButton: SoftButton
+    private lateinit var endButton: SoftButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class HolidayEditActivity : AppCompatActivity() {
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        nameLayout = findViewById(R.id.name_layout)
+        nameError = findViewById(R.id.name_error)
         nameEdit = findViewById(R.id.edit_name)
         startButton = findViewById(R.id.btn_start)
         endButton = findViewById(R.id.btn_end)
@@ -62,7 +62,7 @@ class HolidayEditActivity : AppCompatActivity() {
                 refresh()
             }
         }
-        findViewById<Button>(R.id.btn_save).setOnClickListener { save() }
+        findViewById<View>(R.id.btn_save).setOnClickListener { save() }
         refresh()
     }
 
@@ -74,7 +74,8 @@ class HolidayEditActivity : AppCompatActivity() {
     private fun save() {
         val name = nameEdit.text?.toString()?.trim().orEmpty()
         if (name.isEmpty()) {
-            nameLayout.error = getString(R.string.title_required)
+            nameError.visibility = View.VISIBLE
+            nameEdit.requestFocus()
             return
         }
         Repo.upsertHoliday(this, Holiday(holidayId, name, start, end))

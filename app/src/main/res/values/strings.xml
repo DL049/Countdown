@@ -36,4 +36,10 @@
     <string name="pick_event">選擇倒數事件</string>
     <string name="create_new">建立新倒數</string>
     <string name="widget_pick">點一下選擇倒數</string>
+    <string name="label_widget_bg">小工具背景圖片</string>
+    <string name="pick_image">選擇圖片</string>
+    <string name="remove_image">移除圖片</string>
+    <string name="no_bg_hint">尚未設定，使用預設的淺色背景</string>
+    <string name="bg_preview_desc">小工具背景圖片預覽</string>
+    <string name="image_failed">無法讀取這張圖片</string>
 </resources>

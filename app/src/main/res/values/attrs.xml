@@ -1,0 +1,11 @@
+<resources>
+    <declare-styleable name="SoftFrame">
+        <attr name="softMode" format="enum">
+            <enum name="raised" value="0" />
+            <enum name="well" value="1" />
+            <enum name="flat" value="2" />
+        </attr>
+        <attr name="softRadius" format="dimension" />
+        <attr name="softDepth" format="dimension" />
+    </declare-styleable>
+</resources>

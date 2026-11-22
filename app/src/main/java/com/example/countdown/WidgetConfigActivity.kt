@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +43,7 @@ class WidgetConfigActivity : AppCompatActivity() {
             adapter = this@WidgetConfigActivity.adapter
         }
         empty = findViewById(R.id.empty)
-        findViewById<Button>(R.id.btn_create).setOnClickListener {
+        findViewById<View>(R.id.btn_create).setOnClickListener {
             createEvent.launch(Intent(this, EventEditActivity::class.java))
         }
     }

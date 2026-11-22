@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/soft_bg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -18,7 +20,8 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp" />
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp" />
 
         <TextView
             android:id="@+id/empty"
@@ -28,15 +31,16 @@
             android:gravity="center"
             android:padding="32dp"
             android:text="@string/empty_events"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="@color/soft_muted"
             android:textSize="16sp"
             android:visibility="gone" />
     </FrameLayout>
 
-    <Button
+    <com.example.countdown.SoftButton
         android:id="@+id/btn_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/create_new" />
+        android:layout_margin="8dp"
+        android:text="@string/create_new"
+        app:softRadius="14dp" />
 </LinearLayout>
