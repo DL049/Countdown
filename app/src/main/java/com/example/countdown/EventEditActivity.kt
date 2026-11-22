@@ -109,7 +109,6 @@ class EventEditActivity : AppCompatActivity() {
         btnEveryday.setOnClickListener { weekdays = false; refresh() }
         btnWeekdays.setOnClickListener { weekdays = true; refresh() }
         todaySwitch.setOnCheckedChangeListener { _, _ -> refresh() }
-        titleEdit.setOnFocusChangeListener { _, _ -> titleError.visibility = View.GONE }
         findViewById<View>(R.id.btn_pick_image).setOnClickListener { pickImage.launch("image/*") }
         btnRemoveImage.setOnClickListener {
             WidgetBg.delete(this, eventId)
@@ -156,6 +155,7 @@ class EventEditActivity : AppCompatActivity() {
     }
 
     private fun save() {
+        titleError.visibility = View.GONE
         val e = currentEvent()
         if (e.title.isEmpty()) {
             titleError.visibility = View.VISIBLE
