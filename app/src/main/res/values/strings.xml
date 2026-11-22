@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Countdown</string>
+    <string name="main_instructions">Long-press your home screen → Widgets → Countdown, then pick a title, a date and how to count.\n\nTap a widget any time to edit it.</string>
+    <string name="label_title">Title</string>
+    <string name="hint_title">e.g. Summer break</string>
+    <string name="label_target_date">Target date</string>
+    <string name="label_mode">Count</string>
+    <string name="mode_everyday">Every day (all calendar days)</string>
+    <string name="mode_weekdays">Weekdays only (skip Sat &amp; Sun)</string>
+    <string name="include_today">Count today too</string>
+    <string name="save">Save</string>
+    <string name="unit_days">days left</string>
+    <string name="unit_weekdays">school days left</string>
+    <string name="unit_done">reached 🎉</string>
+    <string name="default_title">Countdown</string>
+</resources>
