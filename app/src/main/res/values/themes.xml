@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.Countdown" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#3F4FD8</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#E0E3FF</item>
+        <item name="colorOnPrimaryContainer">#0B1480</item>
+        <item name="colorSecondary">#5B5F82</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

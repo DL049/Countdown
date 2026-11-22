@@ -6,7 +6,7 @@
     android:targetCellHeight="2"
     android:updatePeriodMillis="86400000"
     android:initialLayout="@layout/widget_countdown"
-    android:configure="com.example.countdown.ConfigActivity"
+    android:configure="com.example.countdown.WidgetConfigActivity"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:widgetFeatures="reconfigurable" />

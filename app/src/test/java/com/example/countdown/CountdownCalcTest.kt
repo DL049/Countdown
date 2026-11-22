@@ -32,4 +32,27 @@ class CountdownCalcTest {
         assertEquals(0, CountdownCalc.daysLeft(mon, mon, CountMode.WEEKDAYS, true))
         assertEquals(0, CountdownCalc.daysLeft(mon, mon.minusDays(3), CountMode.EVERYDAY))
     }
+
+    @Test fun holidaysAreSkippedInBothModes() {
+        // Holiday Wed..Thu next week (mon+2 .. mon+3)
+        val h = Holiday("h", "break", mon.plusDays(2), mon.plusDays(3))
+        // everyday: 10 days minus 2 holiday days
+        assertEquals(8, CountdownCalc.daysLeft(mon, mon.plusDays(10), CountMode.EVERYDAY, false, listOf(h)))
+        // weekdays Mon->next Mon is 5, minus Wed+Thu = 3
+        assertEquals(3, CountdownCalc.daysLeft(mon, mon.plusDays(7), CountMode.WEEKDAYS, false, listOf(h)))
+    }
+
+    @Test fun holidayOnWeekendDoesNotDoubleSubtract() {
+        // Sat+Sun holiday in weekdays mode changes nothing
+        val h = Holiday("h", "wk", mon.plusDays(5), mon.plusDays(6))
+        assertEquals(5, CountdownCalc.daysLeft(mon, mon.plusDays(7), CountMode.WEEKDAYS, false, listOf(h)))
+    }
+
+    @Test fun summaryReportsSkippedDays() {
+        val h = Holiday("h", "break", mon.plusDays(2), mon.plusDays(3))
+        val e = CountdownEvent("e", "t", mon.plusDays(7), CountMode.WEEKDAYS, false, setOf("h"))
+        val s = CountdownCalc.summarize(e, listOf(h), mon)
+        assertEquals(3, s.left)
+        assertEquals(2, s.skippedByHolidays)
+    }
 }
