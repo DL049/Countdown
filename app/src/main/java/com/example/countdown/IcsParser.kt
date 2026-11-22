@@ -75,5 +75,5 @@ object IcsParser {
     }
 
     private fun unescape(s: String) =
-        s.replace("\\n", " ").replace("\\N", " ").replace("\\,", ",").replace("\;", ";").replace("\\\\", "\\")
+        s.replace("\\n", " ").replace("\\N", " ").replace("\\,", ",").replace("\\;", ";").replace("\\\\", "\\")
 }
