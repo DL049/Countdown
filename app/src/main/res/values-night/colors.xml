@@ -1,0 +1,17 @@
+<resources>
+    <!-- Dark soft UI: dark surface, darker lower-right shadow, lighter upper-left highlight -->
+    <color name="soft_bg">#2A2F3A</color>
+    <color name="soft_shadow">#1C2029</color>
+    <color name="soft_light">#3A4150</color>
+    <color name="soft_blue">#8BB0FF</color>
+    <color name="soft_green_text">#4ADE80</color>
+    <color name="soft_orange_text">#FB923C</color>
+    <color name="soft_text">#E5E7EB</color>
+    <color name="soft_muted">#AEB6C4</color>
+    <color name="soft_error">#F87171</color>
+    <color name="tag_blue">#8BB0FF</color>
+    <color name="tag_green">#4ADE80</color>
+    <color name="tag_orange">#FB923C</color>
+    <color name="tag_purple">#B79CFF</color>
+    <color name="tag_red">#FB7185</color>
+</resources>

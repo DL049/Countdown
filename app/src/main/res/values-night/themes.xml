@@ -1,0 +1,18 @@
+<resources>
+    <style name="Theme.Countdown" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/soft_blue</item>
+        <item name="colorOnPrimary">@color/soft_bg</item>
+        <item name="colorSecondary">@color/soft_muted</item>
+        <item name="colorSurface">@color/soft_bg</item>
+        <item name="colorSurfaceContainer">@color/soft_bg</item>
+        <item name="colorOnSurface">@color/soft_text</item>
+        <item name="colorOnSurfaceVariant">@color/soft_muted</item>
+        <item name="colorSecondaryContainer">@color/soft_shadow</item>
+        <item name="colorOnSecondaryContainer">@color/soft_blue</item>
+        <item name="android:colorBackground">@color/soft_bg</item>
+        <item name="android:windowBackground">@color/soft_bg</item>
+        <item name="android:statusBarColor">@color/soft_bg</item>
+        <item name="android:navigationBarColor">@color/soft_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

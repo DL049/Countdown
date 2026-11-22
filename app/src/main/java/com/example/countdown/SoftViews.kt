@@ -211,13 +211,16 @@ class SoftButton @JvmOverloads constructor(
         isClickable = true
         isFocusable = true
         val d = resources.displayMetrics.density
+        val ta0 = context.obtainStyledAttributes(attrs, R.styleable.SoftButton)
+        val hPad = ta0.getDimensionPixelSize(R.styleable.SoftButton_labelPad, (16 * d).toInt())
+        ta0.recycle()
         label.apply {
             gravity = Gravity.CENTER
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             setTypeface(typeface, Typeface.BOLD)
             setTextColor(blue)
             minHeight = (48 * d).toInt()
-            setPadding((16 * d).toInt(), 0, (16 * d).toInt(), 0)
+            setPadding(hPad, 0, hPad, 0)
         }
         addView(label, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
         val ta = context.obtainStyledAttributes(attrs, intArrayOf(android.R.attr.text))
@@ -225,10 +228,51 @@ class SoftButton @JvmOverloads constructor(
         ta.recycle()
     }
 
+    fun setLabelColor(color: Int) = label.setTextColor(color)
+
+    /** For toggles that keep their own label colour: selected = pressed in, otherwise raised. */
+    fun setPressedIn(pressedIn: Boolean) {
+        softMode = if (pressedIn) Mode.WELL else Mode.RAISED
+        isSelected = pressedIn
+    }
+
     /** Segmented-control look: selected = raised blue, unselected = flat grey. */
     fun setSegment(selected: Boolean) {
         softMode = if (selected) Mode.RAISED else Mode.FLAT
         label.setTextColor(if (selected) blue else muted)
         isSelected = selected
+    }
+}
+
+/** Slim progress track (inset) with a green fill. */
+class SoftMeter @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : View(context, attrs, defStyleAttr) {
+
+    private val track = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = ContextCompat.getColor(context, R.color.soft_shadow)
+    }
+    private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = ContextCompat.getColor(context, R.color.soft_green)
+    }
+    private val rect = RectF()
+
+    var progress: Float = 0f
+        set(v) {
+            field = v.coerceIn(0f, 1f)
+            contentDescription = context.getString(R.string.progress_desc, (field * 100).toInt())
+            invalidate()
+        }
+
+    override fun onDraw(canvas: Canvas) {
+        val r = height / 2f
+        rect.set(0f, 0f, width.toFloat(), height.toFloat())
+        canvas.drawRoundRect(rect, r, r, track)
+        if (progress > 0f) {
+            rect.set(0f, 0f, maxOf(height.toFloat(), width * progress), height.toFloat())
+            canvas.drawRoundRect(rect, r, r, fill)
+        }
     }
 }

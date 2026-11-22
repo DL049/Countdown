@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import com.google.android.material.materialswitch.MaterialSwitch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.MaterialToolbar
@@ -26,6 +27,8 @@ class HolidayEditActivity : AppCompatActivity() {
     private lateinit var nameEdit: EditText
     private lateinit var startButton: SoftButton
     private lateinit var endButton: SoftButton
+    private lateinit var singleSwitch: MaterialSwitch
+    private lateinit var endLabel: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,8 @@ class HolidayEditActivity : AppCompatActivity() {
         nameEdit = findViewById(R.id.edit_name)
         startButton = findViewById(R.id.btn_start)
         endButton = findViewById(R.id.btn_end)
+        singleSwitch = findViewById(R.id.switch_single)
+        endLabel = findViewById(R.id.label_end)
 
         val existing = intent.getStringExtra(EXTRA_HOLIDAY_ID)?.let { Repo.holiday(this, it) }
         isNew = existing == null
@@ -46,12 +51,17 @@ class HolidayEditActivity : AppCompatActivity() {
             nameEdit.setText(it.name)
             start = it.start
             end = it.end
+            singleSwitch.isChecked = it.start == it.end
+        }
+        singleSwitch.setOnCheckedChangeListener { _, checked ->
+            if (checked) end = start
+            refresh()
         }
 
         startButton.setOnClickListener {
             pickDate(R.string.label_start, start) {
                 start = it
-                if (end.isBefore(start)) end = start
+                if (singleSwitch.isChecked || end.isBefore(start)) end = start
                 refresh()
             }
         }
@@ -67,6 +77,9 @@ class HolidayEditActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
+        val single = singleSwitch.isChecked
+        endLabel.visibility = if (single) View.GONE else View.VISIBLE
+        endButton.visibility = if (single) View.GONE else View.VISIBLE
         startButton.text = Fmt.dateFull(start)
         endButton.text = Fmt.dateFull(end)
     }
@@ -79,7 +92,7 @@ class HolidayEditActivity : AppCompatActivity() {
             return
         }
         Repo.upsertHoliday(this, Holiday(holidayId, name, start, end))
-        CountdownWidgetProvider.updateAll(this)
+        WidgetUpdater.updateAll(this)
         finish()
     }
 
@@ -96,7 +109,7 @@ class HolidayEditActivity : AppCompatActivity() {
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.delete) { _, _ ->
                     Repo.deleteHoliday(this, holidayId)
-                    CountdownWidgetProvider.updateAll(this)
+                    WidgetUpdater.updateAll(this)
                     finish()
                 }
                 .show()

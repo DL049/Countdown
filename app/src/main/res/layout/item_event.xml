@@ -80,6 +80,13 @@
                 android:layout_marginTop="2dp"
                 android:textColor="@color/soft_muted"
                 android:textSize="13sp" />
+
+            <com.example.countdown.SoftMeter
+                android:id="@+id/meter"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp" />
         </LinearLayout>
     </LinearLayout>
 </com.example.countdown.SoftFrame>

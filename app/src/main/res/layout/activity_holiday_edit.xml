@@ -71,7 +71,18 @@
                 android:layout_height="wrap_content"
                 app:softRadius="14dp" />
 
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_single"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:text="@string/single_day"
+                android:textColor="@color/soft_text" />
+
             <TextView
+                android:id="@+id/label_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"

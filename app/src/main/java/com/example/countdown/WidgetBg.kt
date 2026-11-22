@@ -11,6 +11,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.media.ExifInterface
 import android.net.Uri
+import android.util.Base64
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.max
@@ -19,7 +20,6 @@ import kotlin.math.min
 /** Custom widget background images: one image per event, stored in app-private storage. */
 object WidgetBg {
     private const val SOURCE_MAX = 1024
-    private const val SCRIM = 0x66000000 // darkens the photo so white text stays readable
 
     private fun file(c: Context, eventId: String) = File(c.filesDir, "bg_$eventId.jpg")
 
@@ -67,6 +67,15 @@ object WidgetBg {
         false
     }
 
+    fun readBase64(c: Context, eventId: String): String? {
+        val f = file(c, eventId)
+        return if (f.exists()) Base64.encodeToString(f.readBytes(), Base64.NO_WRAP) else null
+    }
+
+    fun writeBase64(c: Context, eventId: String, data: String) {
+        file(c, eventId).writeBytes(Base64.decode(data, Base64.DEFAULT))
+    }
+
     /** Small bitmap for the preview in the edit screen. */
     fun thumb(c: Context, eventId: String): Bitmap? {
         val f = file(c, eventId)
@@ -76,10 +85,13 @@ object WidgetBg {
 
     /**
      * Renders the widget background: the image centre-cropped to the widget's size,
-     * rounded corners and a dark scrim baked in. Capped in size to stay within the
+     * rounded corners and an overlay baked in. Capped in size to stay within the
      * RemoteViews/binder memory limit.
      */
-    fun render(c: Context, eventId: String, widthDp: Int, heightDp: Int): Bitmap? {
+    fun render(
+        c: Context, eventId: String, widthDp: Int, heightDp: Int,
+        scrimPercent: Int, lightText: Boolean,
+    ): Bitmap? {
         val f = file(c, eventId)
         if (!f.exists()) return null
         val src = BitmapFactory.decodeFile(f.path) ?: return null
@@ -104,7 +116,9 @@ object WidgetBg {
         val r = 24f * d * k
         val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply { this.shader = shader }
         canvas.drawRoundRect(rect, r, r, paint)
-        val scrim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = SCRIM }
+        // dark overlay behind white text, light overlay behind dark text
+        val alpha = (scrimPercent.coerceIn(0, 80) * 255 / 100) shl 24
+        val scrim = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = alpha or (if (lightText) 0x000000 else 0xFFFFFF) }
         canvas.drawRoundRect(rect, r, r, scrim)
         src.recycle()
         return out

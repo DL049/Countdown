@@ -55,6 +55,30 @@
                 android:textSize="13sp"
                 android:visibility="gone" />
 
+            <com.example.countdown.SoftFrame
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                app:softMode="well"
+                app:softRadius="14dp">
+
+                <EditText
+                    android:id="@+id/edit_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/hint_category"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:minHeight="52dp"
+                    android:padding="14dp"
+                    android:textColor="@color/soft_text"
+                    android:textColorHint="@color/soft_muted"
+                    android:textSize="16sp" />
+            </com.example.countdown.SoftFrame>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,12 +100,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
-                android:text="@string/label_mode"
+                android:text="@string/label_days"
                 android:textColor="@color/soft_muted"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <!-- segmented control: inset well holding two segments -->
             <com.example.countdown.SoftFrame
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,17 +135,114 @@
                         android:text="@string/mode_weekdays"
                         app:softDepth="3dp"
                         app:softRadius="12dp" />
+
                 </LinearLayout>
             </com.example.countdown.SoftFrame>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/day_7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+            </LinearLayout>
 
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switch_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:layout_marginTop="8dp"
                 android:minHeight="48dp"
                 android:text="@string/include_today"
+                android:textColor="@color/soft_text" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_yearly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="48dp"
+                android:text="@string/repeat_yearly_switch"
+                android:textColor="@color/soft_text" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="48dp"
+                android:text="@string/pin_event"
+                android:textColor="@color/soft_text" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_notify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:minHeight="48dp"
+                android:text="@string/notify_event"
                 android:textColor="@color/soft_text" />
 
             <TextView
@@ -158,6 +278,73 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
             </com.example.countdown.SoftFrame>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/label_color"
+                android:textColor="@color/soft_muted"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/color_0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dot"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/color_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dot"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/color_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dot"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/color_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dot"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+                <com.example.countdown.SoftButton
+                    android:id="@+id/color_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dot"
+                    app:labelPad="0dp"
+                    app:softDepth="2dp"
+                    app:softRadius="10dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -223,6 +410,56 @@
                     app:softRadius="14dp" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_scrim_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/soft_muted"
+                android:textSize="14sp" />
+
+            <SeekBar
+                android:id="@+id/seek_scrim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="80"
+                android:minHeight="48dp" />
+
+            <com.example.countdown.SoftFrame
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                app:softDepth="4dp"
+                app:softMode="well"
+                app:softRadius="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.example.countdown.SoftButton
+                        android:id="@+id/btn_text_light"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/text_light"
+                        app:softDepth="3dp"
+                        app:softRadius="12dp" />
+
+                    <com.example.countdown.SoftButton
+                        android:id="@+id/btn_text_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/text_dark"
+                        app:softDepth="3dp"
+                        app:softRadius="12dp" />
+
+                </LinearLayout>
+            </com.example.countdown.SoftFrame>
+
             <com.example.countdown.SoftFrame
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,6 +483,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save"
                 app:softRadius="14dp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

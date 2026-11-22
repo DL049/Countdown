@@ -15,7 +15,7 @@ class EventAdapter(private val onClick: (CountdownEvent) -> Unit) :
     private var rows = emptyList<Row>()
 
     fun submit(events: List<CountdownEvent>, holidays: List<Holiday>) {
-        rows = events.map { Row(it, CountdownCalc.summarize(it, holidays)) }
+        rows = CountdownCalc.sortEvents(events).map { Row(it, CountdownCalc.summarize(it, holidays)) }
         notifyDataSetChanged()
     }
 
@@ -25,6 +25,7 @@ class EventAdapter(private val onClick: (CountdownEvent) -> Unit) :
         val title: TextView = v.findViewById(R.id.tv_title)
         val date: TextView = v.findViewById(R.id.tv_date)
         val detail: TextView = v.findViewById(R.id.tv_detail)
+        val meter: SoftMeter = v.findViewById(R.id.meter)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -35,20 +36,20 @@ class EventAdapter(private val onClick: (CountdownEvent) -> Unit) :
     override fun onBindViewHolder(h: VH, position: Int) {
         val (e, s) = rows[position]
         val c = h.itemView.context
-        h.number.text = s.left.toString()
+        h.number.text = Fmt.number(s).toString()
         h.unit.text = Fmt.unit(c, e, s)
-        h.title.text = e.title
-        h.date.text = Fmt.dateFull(e.target)
+        h.title.text = if (e.pinned) "📌 ${e.title}" else e.title
+        h.date.text = listOf(e.category, Fmt.dateFull(s.target)).filter { it.isNotBlank() }.joinToString(" · ")
         h.detail.text = Fmt.detail(c, e, s)
         // darker text shades keep WCAG AA contrast on the soft background
-        h.number.setTextColor(
-            ContextCompat.getColor(c, if (s.reached) R.color.soft_green_text else R.color.soft_blue),
-        )
+        h.number.setTextColor(Fmt.numberColor(c, e, s))
         h.detail.setTextColor(
             ContextCompat.getColor(
                 c, if (s.skippedByHolidays > 0) R.color.soft_orange_text else R.color.soft_muted,
             ),
         )
+        h.meter.visibility = if (s.phase == Phase.UPCOMING) View.VISIBLE else View.GONE
+        h.meter.progress = s.progress
         h.itemView.setOnClickListener { onClick(e) }
     }
 }
@@ -78,9 +79,11 @@ class HolidayAdapter(private val onClick: (Holiday) -> Unit) :
         val hol = items[position]
         val c = h.itemView.context
         h.name.text = hol.name
-        h.range.text = c.getString(
-            R.string.range_fmt, Fmt.dateMedium(hol.start), Fmt.dateMedium(hol.end),
-        )
+        h.range.text = if (hol.start == hol.end) {
+            Fmt.dateMedium(hol.start)
+        } else {
+            c.getString(R.string.range_fmt, Fmt.dateMedium(hol.start), Fmt.dateMedium(hol.end))
+        }
         h.length.text = c.getString(R.string.holiday_length, hol.lengthDays)
         h.itemView.setOnClickListener { onClick(hol) }
     }

@@ -8,4 +8,7 @@
         <attr name="softRadius" format="dimension" />
         <attr name="softDepth" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="SoftButton">
+        <attr name="labelPad" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -2,29 +2,43 @@
     <string name="app_name">倒數日</string>
     <string name="tab_events">倒數</string>
     <string name="tab_holidays">假期</string>
+    <string name="tab_settings">設定</string>
     <string name="empty_events">還沒有倒數事件\n點右下角 ＋ 新增一個</string>
-    <string name="empty_holidays">還沒有假期\n新增假期後，就能在倒數事件中選擇不計算它們</string>
+    <string name="empty_holidays">還沒有假期\n新增假期（或到「設定」匯入行事曆）後，就能在倒數事件中選擇不計算它們</string>
     <string name="new_event">新增倒數</string>
     <string name="edit_event">編輯倒數</string>
     <string name="new_holiday">新增假期</string>
     <string name="edit_holiday">編輯假期</string>
     <string name="hint_title">事件名稱（例如：放暑假）</string>
+    <string name="hint_category">分類（選填，例如：考試）</string>
     <string name="hint_holiday_name">假期名稱（例如：聖誕假期）</string>
     <string name="title_required">請輸入名稱</string>
     <string name="label_target_date">目標日期</string>
     <string name="label_start">開始日期</string>
     <string name="label_end">結束日期</string>
-    <string name="label_mode">計算方式</string>
+    <string name="single_day">只有一天（單日停課）</string>
+    <string name="label_days">計入的星期（取消勾選的星期不算，例如沒課的星期五）</string>
     <string name="mode_everyday">每天</string>
     <string name="mode_weekdays">只算平日</string>
+    <string name="list_sep">、</string>
     <string name="include_today">今天也算進去</string>
+    <string name="repeat_yearly">每年重複</string>
+    <string name="repeat_yearly_switch">每年重複（生日、紀念日）</string>
+    <string name="pin_event">置頂</string>
+    <string name="notify_event">到整數日時提醒我</string>
     <string name="label_skip_holidays">不計算這些假期</string>
     <string name="no_holidays_hint">尚未建立假期。到「假期」分頁新增後，就能在這裡勾選。</string>
-    <string name="holiday_check_fmt">%1$s（%2$s – %3$s）</string>
+    <string name="holiday_check_fmt">%1$s（%2$s）</string>
     <string name="range_fmt">%1$s – %2$s</string>
     <string name="holiday_length">共 %1$d 天</string>
-    <string name="detail_skipped">%1$s · 已扣除假期 %2$d 天</string>
-    <string name="preview_fmt">預覽：還有 %1$d %2$s</string>
+    <string name="detail_skipped_part">已扣除假期 %1$d 天</string>
+    <string name="label_color">標籤顏色</string>
+    <string name="color_dot">●</string>
+    <string name="color_desc">標籤顏色 %1$d</string>
+    <string name="preview_future">預覽：還有 %1$d %2$s</string>
+    <string name="preview_past">預覽：%1$d %2$s</string>
+    <string name="preview_today">預覽：就是今天 🎉</string>
+    <string name="progress_desc">進度 %1$d%%</string>
     <string name="save">儲存</string>
     <string name="delete">刪除</string>
     <string name="cancel">取消</string>
@@ -32,14 +46,53 @@
     <string name="confirm_delete_holiday">要刪除這個假期嗎？它會從所有倒數事件中移除。</string>
     <string name="unit_days">天</string>
     <string name="unit_weekdays">個上課日</string>
-    <string name="unit_done">已到 🎉</string>
+    <string name="unit_past">天前</string>
+    <string name="unit_today">就是今天 🎉</string>
     <string name="pick_event">選擇倒數事件</string>
     <string name="create_new">建立新倒數</string>
     <string name="widget_pick">點一下選擇倒數</string>
+    <string name="widget_small_label">倒數日（小）</string>
+    <string name="widget_wide_label">倒數日（長條）</string>
+    <string name="widget_list_label">倒數日（清單）</string>
+    <string name="widget_list_empty">還沒有倒數事件</string>
     <string name="label_widget_bg">小工具背景圖片</string>
     <string name="pick_image">選擇圖片</string>
     <string name="remove_image">移除圖片</string>
-    <string name="no_bg_hint">尚未設定，使用預設的淺色背景</string>
+    <string name="no_bg_hint">尚未設定，使用預設背景</string>
     <string name="bg_preview_desc">小工具背景圖片預覽</string>
     <string name="image_failed">無法讀取這張圖片</string>
+    <string name="scrim_label">圖片遮罩深淺 %1$d%%</string>
+    <string name="text_light">白色文字</string>
+    <string name="text_dark">深色文字</string>
+    <string name="channel_name">整數日提醒</string>
+    <string name="notify_today">就是今天 🎉</string>
+    <string name="notify_left">還有 %1$d %2$s</string>
+    <string name="settings_notify_title">通知</string>
+    <string name="settings_notify_switch">到整數日時通知我</string>
+    <string name="settings_notify_hint">剩 10、20、30…天，以及最後的 7、5、3、2、1 天和當天，會在下面設定的時間通知一次。每個事件可以個別關閉。</string>
+    <string name="settings_notify_time">通知時間</string>
+    <string name="notif_permission_denied">沒有通知權限，請到系統設定開啟</string>
+    <string name="settings_holiday_title">行事曆</string>
+    <string name="import_ics">選擇 .ics 檔匯入</string>
+    <string name="import_ics_hint">從學校的行事曆檔（.ics）一次匯入假期，匯入前可以勾選要哪些。</string>
+    <string name="ics_none">檔案裡找不到可匯入的日期</string>
+    <string name="ics_pick_title">選擇要匯入的假期</string>
+    <string name="ics_imported">已匯入 %1$d 個假期</string>
+    <string name="settings_backup_title">備份與還原</string>
+    <string name="backup_hint">把所有倒數、假期和背景圖片存成一個檔案，換手機或重新安裝時可以還原。</string>
+    <string name="export_backup">匯出備份</string>
+    <string name="import_backup">匯入備份</string>
+    <string name="backup_import_confirm">匯入會覆蓋目前所有的倒數和假期，確定嗎？</string>
+    <string name="backup_exported">已匯出備份</string>
+    <string name="backup_imported">已還原備份</string>
+    <string name="backup_failed">備份檔無法讀取或寫入</string>
+    <string-array name="day_letters">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </string-array>
 </resources>

@@ -57,7 +57,7 @@ class WidgetConfigActivity : AppCompatActivity() {
 
     private fun bind(eventId: String) {
         Repo.bindWidget(this, widgetId, eventId)
-        CountdownWidgetProvider.updateWidget(this, AppWidgetManager.getInstance(this), widgetId)
+        WidgetUpdater.updateOne(this, AppWidgetManager.getInstance(this), widgetId)
         setResult(RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId))
         finish()
     }
