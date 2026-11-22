@@ -33,7 +33,7 @@ class CountdownWidgetProvider : AppWidgetProvider() {
         when (intent.action) {
             ACTION_REFRESH,
             Intent.ACTION_DATE_CHANGED,
-            Intent.ACTION_TIME_SET,
+            Intent.ACTION_TIME_CHANGED,
             Intent.ACTION_TIMEZONE_CHANGED,
             Intent.ACTION_BOOT_COMPLETED -> updateAll(context)
         }
